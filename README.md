@@ -1,2 +1,2 @@
 # CS435-project
-Big Data project
+Final project for Big Data (CS435)
