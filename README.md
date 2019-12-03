@@ -1,4 +1,4 @@
-###CS435 Big Data Project
+### CS435 Big Data Project
 
 For Artworks.csv	  
  	- If String line is the line you're currently on , the year is stored in  line[8].  It's either an integer like this 1968 or a range like this 1890 - 1891  so it might be better to store it as a string then convert it to an int later.  
