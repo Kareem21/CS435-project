@@ -1,4 +1,5 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -11,6 +12,8 @@ public class job {
 
   public static void main(String[] args) {
     try {
+      FileSystem files = FileSystem.get(new Configuration());
+      files.delete(new Path("/out"), true);
       Configuration conf = new Configuration();
 
   // TATE DATASET

@@ -8,32 +8,48 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
     protected void map(LongWritable key, Text value, Context context) throws
         IOException, InterruptedException {
 
-      String k = "";
-      String v = "";
+      String name = "";
+      String year = "";
+      String dim = "";
+
       if (value.toString().contains(",support:")) {
-
+        String sanit = clean(value.toString());
         //GETS THE ARTIST NAME
-        String[] input = value.toString().split("\"");
-        if(input.length<1)
-        k = input[1];
-
-        //GETS THE ARTWORKS YEAR
-        for (String i : input) {
-          if(i.length() > 6) {
-            if (i.charAt(0) == ',' && i.charAt(5) == ',') {
-              v = i.substring(1, 6);
-            }
-          }
-        }
+        String[] input = sanit.split(",");
+        if(input.length>1)
+        name = input[2].replace("\"", "");
+        year = input[9];
 
         //GETS ARTWORKS DIMENSIONS
         String[] temp = value.toString().split(",support:");
         input = temp[1].split(" ");
+        if (input.length > 3) {
+          dim += " " + input[1] + "," + input[3];
+        }
 
-        v += " " + input[1];
-
-        context.write(new Text(k), new Text(v));
+        if(!name.equals("") && !dim.equals("") && !year.equals(""))
+          context.write(new Text(name), new Text(year + " " + dim));
       }
     }
+
+  private String clean(String args)
+  {
+    StringBuilder copy = new StringBuilder();
+
+    boolean inQuotes = false;
+
+    for(int i=0; i<args.length(); ++i)
+    {
+      if (args.charAt(i)=='"')
+        inQuotes = !inQuotes;
+      if (args.charAt(i)==',' && inQuotes)
+        copy.append(" ");
+      else
+        copy.append(args.charAt(i));
+    }
+
+    System.out.println(args);
+    return copy.toString();
   }
+}
 
