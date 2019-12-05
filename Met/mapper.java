@@ -12,7 +12,7 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
     String year = "";   //index 20
     String dim  = "";   //index 25
 
-    String intake = clean(value.toString());
+    String intake  = clean(value.toString());
     String[] input = intake.split(",");
     if(input.length > 25 &&  !input[14].equals("") && !input[25].equals("")) {
       if (input[24].toLowerCase().contains("oil")
@@ -69,12 +69,12 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
   // Retains CSV delineation
   private String clean(String args) {
     StringBuilder copy = new StringBuilder();
-    boolean inQuotes = false;
+    boolean inQuotes   = false;
 
     for(int i=0; i<args.length(); ++i) {
-      if (args.charAt(i)=='"')
+      if (args.charAt(i) == '"')
         inQuotes = !inQuotes;
-      if (args.charAt(i)==',' && inQuotes)
+      if (args.charAt(i) == ',' && inQuotes)
         copy.append(" ");
       else copy.append(args.charAt(i));
     }
