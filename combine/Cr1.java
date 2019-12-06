@@ -13,22 +13,32 @@ public class Cr1 extends Reducer<Text, Text, Text, Text> {
     for (Text cur : values) {
       in.add(cur.toString());
       String[] temp = cur.toString().split(" ");
-      if (Integer.parseInt(temp[0]) < low){
-        low = Integer.parseInt(temp[0]);
-      }
+      if(!temp[0].contains("no"))
+        if (Integer.parseInt(temp[0]) < low){
+          low = Integer.parseInt(temp[0]);
+        }
     }
 
+    boolean flag = false;
     for (String cur : in) {
-        String[] temp = cur.toString().split("  ");
-        String[] dim = temp[1].replaceAll(",", " ").split(" ");
-        dim[0] = dim[0].replaceAll(".0", "").replaceAll("[^0-9.)]", " ");
-        dim[1] = dim[1].replaceAll(".0", "").replaceAll("[^0-9.)]", " ");
-        dim[0] = dim[0].replaceAll(".", "").replaceAll("[^0-9.)]", " ");
-        dim[1] = dim[0].replaceAll(".", "").replaceAll("[^0-9.)]", " ");
-
-        if (dim.length >= 2 && dim[0].length() > 0 && dim[1].length() > 0) {
-          context.write(new Text((Integer.parseInt(temp[0]) - low + "")), new Text(Double.parseDouble(dim[0]) / Double.parseDouble(dim[1]) + ""));
+      cur = cur.replaceAll(" +", " ");
+      String[] temp = cur.split(" ");
+        if(temp.length>1) {
+          String[] dim = temp[1].split(",");
+          if(dim.length>1) {
+            if (dim[0].length() > 0 && dim[1].length() > 0) {
+              double lows = ((Integer.parseInt(temp[0]) - low));
+              context.write(new Text( lows + "")
+                  , new Text(Double.parseDouble(dim[0]) / Double.parseDouble(dim[1]) + ""));
+              flag = true;
+            }
+          }
+          if(!flag) {
+            context.write(new Text("0000000000")
+                , new Text("0000000000"));
+          }
         }
-      }
+    }
+
   }
 }
