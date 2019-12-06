@@ -45,9 +45,11 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
           // If dims are correct format
           if (i.length >= 2)
             if (i[0].length() > 0 && i[1].length() > 0)
-              if ((i[0].charAt(0) >= '0' && i[0].charAt(0) <= '9') && (i[1].charAt(0) >= '0' && i[1].charAt(0) <= '9')) {
-                double w = Double.parseDouble(((i[0]).replace(")", ""))) * 10; // mm dimensions
-                double h = Double.parseDouble(((i[1]).replace(")", ""))) * 10; // mm dimensions
+              if ((i[0].charAt(0) >= '0' && i[0].charAt(0) <= '9') 
+                  && (i[1].charAt(0) >= '0' && i[1].charAt(0) <= '9')) 
+              {
+                double w = Double.parseDouble(i[0]) * 10; // mm dimensions
+                double h = Double.parseDouble(i[1]) * 10; // mm dimensions
                 dim = " " + w + "," + h;
           }
         } else dim = "";
