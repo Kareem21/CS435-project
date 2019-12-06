@@ -15,21 +15,44 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
     if (value.toString().contains(",support:")) {
       String sanit = clean(value.toString());
       //GETS THE ARTIST NAME
-      String[] input = sanit.split(",");
-      if(input.length>1)
-        name = input[2].replace("\"", "");
-      year = input[9];
+      String[] i = sanit.split(",");
+      name = i[2].replace("\"", "");
+      name = name.replaceAll(" +", " ");
+      String[] parts = name.split(" ");
+      name = "";
+
+      for (int n = 1; n < parts.length; n++) {
+        name += parts[n] + " ";
+      }
+      name += parts[0];
+      if (name.toLowerCase().contains("&")
+          || name.toLowerCase().contains("and")
+          || name.toLowerCase().contains("anonymous"))
+      {
+        name = "";
+      }
+
+      year = i[9];
 
       //GETS ARTWORKS DIMENSIONS
       String[] temp = value.toString().split(",support:");
       String dd = temp[1].replaceAll("[^0-9.)]", " ");
       dd = dd.replaceAll("[^0-9.)]", " ");
       dd = dd.replaceAll(" +", " ");
-      input = dd.split(" ");
-      if (input.length > 3) {
-        dim += " " + input[1] + "," + input[2];
+      if (dd.charAt(0) == ' '){
+        dd = dd.substring(1);
       }
-
+      i = dd.split(" ");
+      if (i.length >=2) {
+        dim = i[1] + " " + i[2];
+        if (i[0].length() > 0 && i[1].length() > 0)
+          if ((i[0].charAt(0) >= '0' && i[0].charAt(0) <= '9')
+              && (i[1].charAt(0) >= '0' && i[1].charAt(0) <= '9')) {
+            double w = Double.parseDouble(i[0]); // mm dimensions
+            double h = Double.parseDouble(i[1]); // mm dimensions
+            dim = " " + w + "," + h;
+          }
+      }
       if(!name.equals("") && !dim.equals("") && !year.equals(""))
         context.write(new Text(name), new Text(year + " " + dim));
     }
