@@ -3,3 +3,7 @@ Analyzing museum datasets (paintings) to determine how the aspect ratio of paint
 
 
 * Instructions for running: 
+-
+
+-
+-
