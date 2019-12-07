@@ -14,7 +14,7 @@ public class mapper extends Mapper<LongWritable, Text, Text, Text> {
 
     String intake  = clean(value.toString());
     String[] input = intake.split(",");
-    if(input.length > 25 &&  !input[14].equals("") && !input[25].equals("")) {
+    if(input.length > 25 && !input[14].equals("") && !input[25].equals("")) {
       if (input[24].toLowerCase().contains("oil")
           || input[24].toLowerCase().contains("canvas")
           || input[24].toLowerCase().contains("paint")
